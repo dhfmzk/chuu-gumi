@@ -4,15 +4,15 @@ This directory is the optional durable state store for the cyclic visual asset
 workflow. Use it when the user wants decisions, contracts, feedback, and QA
 results preserved across turns or sessions.
 
-`state.yaml` is the current-state pointer. It stores the active phase and paths
-to current artifacts, including the active feedback packet during feedback
-loops. Do not embed full artifact bodies in `state.yaml`.
+`state.yaml` is created on demand as the current-state pointer. It stores the
+active phase and paths to current artifacts, including the active feedback
+packet during feedback loops. Do not embed full artifact bodies in `state.yaml`.
 
 ## Layout
 
 ```text
 artifacts/
-  state.yaml
+  state.yaml           created on demand
   style/
     references/    Reference Manifests and selected-reference analysis
     atoms/         Style Atom Ledgers

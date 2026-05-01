@@ -1,6 +1,6 @@
 # Architecture
 
-This repository defines a project-local Codex system for cyclic visual asset work with GPT Image 2. The core design is a state machine, not a linear pipeline.
+This repository defines a project-local Codex system for cyclic visual asset work using the available Codex image-generation capability. The core design is a state machine, not a linear pipeline.
 
 ## Layers
 
@@ -46,9 +46,9 @@ stateDiagram-v2
 | `curator` agent | optional deep analysis and contract revision proposals | bypass user approval |
 | `crafter` agent | optional asset-production planning and QA delegation | mutate style memory |
 | `style-reviewer` agent | optional independent review | silently fix artifacts without instruction |
-| `artifacts/state.yaml` | current phase and active pointers | replace artifact content |
+| `artifacts/state.yaml` | current phase and active pointers when durable state exists | replace artifact content |
 
-Image generation steps use GPT Image 2 by default. If GPT Image 2 is unavailable, the workflow enters `blocked` and returns a blocked manifest rather than silently substituting another model.
+Image generation steps use the available Codex image-generation capability. The workflow records the generation tool and model when the environment reports them, and does not assert a specific model name when it is not exposed. If image generation is unavailable or fails, the workflow enters `blocked` and returns a blocked manifest rather than inventing image outputs.
 
 ## Evidence Flow
 

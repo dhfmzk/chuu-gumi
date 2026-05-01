@@ -2,7 +2,7 @@
 
 ## Style State Index
 
-Use `artifacts/state.yaml` as the durable map of the current style system. Keep it compact and store paths, not full artifacts.
+Use `artifacts/state.yaml` as the durable map of the current style system when durable state exists. Create it on the first durable workflow transition if it is missing. Keep it compact and store paths, not full artifacts.
 
 ```yaml
 workflow_state:
@@ -22,13 +22,15 @@ workflow_state:
 
 ## Reference Manifest
 
-Use this after reference exploration. Keep it compact enough for the main Codex session. Use GPT Image 2 for generated reference candidates. When GPT Image 2 generation is blocked before any image output exists, set `generation_status: blocked`, write `blocking_reason`, and use `candidates: []`.
+Use this after reference exploration. Keep it compact enough for the main Codex session. Use the available Codex image-generation capability for generated reference candidates. When generation is blocked before any image output exists, set `generation_status: blocked`, write `blocking_reason`, and use `candidates: []`.
 
 ```yaml
 reference_manifest:
   batch_id: "<stable batch id>"
   generation_status: "generated | blocked"
   blocking_reason: "<required when generation_status is blocked>"
+  generation_tool: "<tool name when known, or unknown>"
+  generation_model: "<model name when reported, or unknown>"
   source_intent: "<brief restatement of the user's request>"
   candidates:
     - id: "R01"

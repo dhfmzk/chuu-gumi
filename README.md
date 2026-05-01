@@ -7,7 +7,7 @@
 
 [한국어 문서](./README.ko.md)
 
-Project-local Codex skills for cyclic visual asset generation with GPT Image 2. The system keeps explicit state in `artifacts/state.yaml`, uses `$curate` for style memory and Style Contract changes, and uses `$craft` for approved-contract asset generation and QA.
+Project-local Codex skills for cyclic visual asset generation using the available Codex image-generation capability. The system keeps explicit state in `artifacts/state.yaml` when durable state exists, uses `$curate` for style memory and Style Contract changes, and uses `$craft` for approved-contract asset generation and QA.
 
 ## Quick Start
 
@@ -41,7 +41,7 @@ Generate candidates and QA them against the contract.
 ```text
 .agents/skills/       repo-local Codex skills
 .codex/agents/        optional specialist subagents
-artifacts/state.yaml  current workflow phase and artifact pointers
+artifacts/state.yaml  current workflow phase and artifact pointers, created on demand
 artifacts/            durable state: references, contracts, generations, QA
 docs/                 architecture, schemas, usage, validation
 scripts/              static validation helpers
@@ -86,7 +86,7 @@ scripts/validate-static.sh
 ## Rules
 
 - No global install is required.
-- GPT Image 2 is the default image-generation capability; if unavailable, return a blocked manifest instead of silently substituting another model.
+- Use the available Codex image-generation capability; if image generation is unavailable or fails, return a blocked manifest instead of inventing image outputs.
 - Approved Style Contracts are immutable.
 - `curate` owns style memory and contract revisions.
 - `craft` treats the approved contract as read-only.

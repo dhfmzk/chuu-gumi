@@ -20,7 +20,7 @@ Increment IDs by reading existing artifact filenames. Do not reuse IDs.
 
 ## State Pointer
 
-`artifacts/state.yaml` is the only current-state pointer. It should reference artifact paths, not embed full artifacts.
+`artifacts/state.yaml` is the only current-state pointer when durable state exists. Create it on the first durable workflow transition if it is missing. It should reference artifact paths, not embed full artifacts.
 
 ```yaml
 workflow_state:

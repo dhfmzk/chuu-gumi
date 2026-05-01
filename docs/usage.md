@@ -62,9 +62,9 @@ Expected state depends on QA:
 - `qa` with `pending_user_action: select_asset`
 - `crafting` when regeneration is appropriate
 - `feedback` when style drift or a contract gap requires `curate`
-- `blocked` when image generation is unavailable
+- `blocked` when image generation is unavailable or fails
 
-Image generation means GPT Image 2 by default. If GPT Image 2 is unavailable in the current Codex environment, expect `current_phase: blocked` and a manifest with `generation_status: blocked`.
+Image generation uses the available Codex image-generation capability. If the environment does not expose a model name, record the model as `unknown` or omit it. If image generation is unavailable or fails, expect `current_phase: blocked` and a manifest with `generation_status: blocked`.
 
 ## Use Optional Subagents
 

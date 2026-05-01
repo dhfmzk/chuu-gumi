@@ -27,7 +27,6 @@ require_file ".agents/skills/craft/agents/openai.yaml"
 require_file ".codex/agents/curator.toml"
 require_file ".codex/agents/crafter.toml"
 require_file ".codex/agents/style-reviewer.toml"
-require_file "artifacts/state.yaml"
 require_file "docs/architecture.md"
 require_file "docs/schemas.md"
 require_file "docs/usage.md"
@@ -43,15 +42,30 @@ require_dir "artifacts/assets/qa"
 require_dir "artifacts/assets/feedback"
 
 if command -v ruby >/dev/null 2>&1; then
-  ruby -e 'require "yaml"; YAML.load_file("artifacts/state.yaml"); Dir[".agents/skills/*/agents/openai.yaml"].each { |p| YAML.load_file(p) }'
+  ruby -e 'require "yaml"; YAML.load_file("artifacts/state.yaml") if File.exist?("artifacts/state.yaml"); Dir[".agents/skills/*/agents/openai.yaml"].each { |p| YAML.load_file(p) }'
 else
   echo "ruby not found; skipped YAML parse check" >&2
 fi
-python3 -c 'import tomllib; [tomllib.load(open(p, "rb")) for p in [".codex/agents/curator.toml", ".codex/agents/crafter.toml", ".codex/agents/style-reviewer.toml"]]'
+python3 - <<'PY'
+import sys
 
-if find . -name ".DS_Store" -print | grep -q .; then
-  echo "Found .DS_Store files" >&2
-  find . -name ".DS_Store" -print >&2
+try:
+    import tomllib
+except ModuleNotFoundError:
+    try:
+        import tomli as tomllib
+    except ModuleNotFoundError:
+        print("tomllib/tomli not available; skipped TOML parse check", file=sys.stderr)
+        raise SystemExit(0)
+
+for path in [".codex/agents/curator.toml", ".codex/agents/crafter.toml", ".codex/agents/style-reviewer.toml"]:
+    with open(path, "rb") as handle:
+        tomllib.load(handle)
+PY
+
+if git ls-files | grep -E -q '(^|/)\.DS_Store$'; then
+  echo "Found tracked .DS_Store files" >&2
+  git ls-files | grep -E '(^|/)\.DS_Store$' >&2
   exit 1
 fi
 
@@ -70,8 +84,20 @@ else
   echo "rg not found; skipped stale-path and rejected-domain scans" >&2
 fi
 
-grep -R "GPT Image 2" README.md README.ko.md AGENTS.md .agents .codex docs >/dev/null
-grep -R "active_feedback_packet" artifacts/state.yaml docs .agents >/dev/null
+if command -v rg >/dev/null 2>&1; then
+  MODEL_PATTERN='GPT'' Image 2|gpt''-image-2'
+  if rg -n "$MODEL_PATTERN" README.md README.ko.md AGENTS.md .agents .codex docs scripts; then
+    echo "Found hard-coded image model references" >&2
+    exit 1
+  fi
+else
+  MODEL_PATTERN='GPT'' Image 2|gpt''-image-2'
+  if grep -R -E "$MODEL_PATTERN" README.md README.ko.md AGENTS.md .agents .codex docs scripts >/dev/null; then
+    echo "Found hard-coded image model references" >&2
+    exit 1
+  fi
+fi
+grep -R "active_feedback_packet" docs .agents >/dev/null
 
 SKILL_CREATOR="${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py"
 if [[ -f "$SKILL_CREATOR" ]]; then

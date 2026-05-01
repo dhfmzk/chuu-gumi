@@ -7,7 +7,7 @@
 
 [English README](./README.md)
 
-GPT Image 2 기반의 순환형 시각 에셋 생성을 위한 프로젝트 로컬 Codex 스킬 팩입니다. 시스템은 `artifacts/state.yaml`에 현재 상태를 명시하고, `$curate`는 style memory와 Style Contract 변경을 담당하며, `$craft`는 승인된 계약 기반 에셋 생성과 QA를 담당합니다.
+현재 Codex에서 사용 가능한 이미지 생성 capability를 쓰는 순환형 시각 에셋 생성을 위한 프로젝트 로컬 Codex 스킬 팩입니다. 시스템은 durable state가 필요할 때 `artifacts/state.yaml`에 현재 상태를 명시하고, `$curate`는 style memory와 Style Contract 변경을 담당하며, `$craft`는 승인된 계약 기반 에셋 생성과 QA를 담당합니다.
 
 ## 빠른 시작
 
@@ -41,7 +41,7 @@ $craft
 ```text
 .agents/skills/       repo-local Codex skills
 .codex/agents/        선택적 specialist subagents
-artifacts/state.yaml  현재 workflow phase와 artifact pointer
+artifacts/state.yaml  현재 workflow phase와 artifact pointer, 필요할 때 생성
 artifacts/            references, contracts, generations, QA 상태 저장소
 docs/                 architecture, schemas, usage, validation
 scripts/              static validation helpers
@@ -86,7 +86,7 @@ scripts/validate-static.sh
 ## 규칙
 
 - 글로벌 설치는 필요 없습니다.
-- GPT Image 2를 기본 이미지 생성 capability로 사용합니다. 사용할 수 없으면 다른 모델로 조용히 대체하지 말고 blocked manifest를 반환합니다.
+- 현재 Codex에서 사용 가능한 이미지 생성 capability를 사용합니다. 이미지 생성이 불가능하거나 실패하면 이미지 출력이 있는 것처럼 꾸미지 말고 blocked manifest를 반환합니다.
 - 승인된 Style Contract는 수정하지 않습니다.
 - `curate`가 style memory와 contract revision을 담당합니다.
 - `craft`는 승인된 계약을 읽기 전용으로 취급합니다.

@@ -2,7 +2,7 @@
 
 ## State Pointer
 
-Read `artifacts/state.yaml` before using the current approved contract. Store paths in state, not full artifact bodies.
+Read `artifacts/state.yaml` before using the current approved contract when durable state exists. Create it on the first durable workflow transition if it is missing. Store paths in state, not full artifact bodies.
 
 ```yaml
 workflow_state:
@@ -60,7 +60,7 @@ style_contract:
 
 ## Asset Brief
 
-Use this before GPT Image 2 generation. Fill unknown optional fields only when the user gave enough information. Otherwise omit them or mark an explicit assumption.
+Use this before image generation. Fill unknown optional fields only when the user gave enough information. Otherwise omit them or mark an explicit assumption.
 
 ```yaml
 asset_brief:
@@ -86,13 +86,15 @@ asset_brief:
 
 ## Generation Manifest
 
-Use this after GPT Image 2 generation and QA. When GPT Image 2 generation is blocked before any image output exists, set `generation_status: blocked`, write `blocking_reason`, and use `candidates: []`.
+Use this after image generation and QA. When generation is blocked before any image output exists, set `generation_status: blocked`, write `blocking_reason`, and use `candidates: []`.
 
 ```yaml
 generation_manifest:
   batch_id: "<stable batch id>"
   generation_status: "generated | blocked"
   blocking_reason: "<required when generation_status is blocked>"
+  generation_tool: "<tool name when known, or unknown>"
+  generation_model: "<model name when reported, or unknown>"
   style_contract_id: "<contract id used>"
   style_contract_version: "<contract version used>"
   asset_brief_id: "<brief id>"

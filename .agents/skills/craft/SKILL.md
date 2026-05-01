@@ -11,7 +11,7 @@ Use `craft` to produce and evaluate asset candidates from an approved Style Cont
 
 This is a loop, not a terminal production step. `craft` may discover that an asset prompt is weak, the generator drifted, or the Style Contract is underspecified. It reports those findings, but it does not revise the contract itself.
 
-Use GPT Image 2 as the default image-generation capability for asset candidate generation. If GPT Image 2 is unavailable in the current Codex environment, return the blocked manifest described below instead of substituting another image model silently.
+Use the currently available Codex image-generation capability for asset candidate generation. Record the generation tool and model when the environment reports them. Do not assert a specific model name when it is not exposed. If image generation is unavailable or fails, return the blocked manifest described below instead of inventing image outputs.
 
 ## Required Inputs
 
@@ -25,7 +25,7 @@ If there is no Style Contract with `approval_status: approved`, non-empty `appro
 
 ## State Model
 
-When the repository is writable, store durable workflow state under `artifacts/` unless the user asks for an inline-only run. Read `artifacts/state.yaml` before generating and update it after each state transition.
+When the repository is writable, store durable workflow state under `artifacts/` unless the user asks for an inline-only run. Read `artifacts/state.yaml` before generating when it exists, and create or update it after each state transition.
 
 ```text
 artifacts/state.yaml
@@ -75,11 +75,11 @@ Keep style and subject separate. The subject description tells the image-generat
 
 ### 3. Generate
 
-Use GPT Image 2 through the available image-generation capability. Generate the requested number of candidates, or 3-6 candidates when the user did not specify a count.
+Use the available Codex image-generation capability. Generate the requested number of candidates, or 3-6 candidates when the user did not specify a count.
 
-If GPT Image 2 image generation is unavailable, return the composed prompt package and a blocked manifest using `generation_status: blocked`, then state that generation is blocked by missing GPT Image 2 access or image tooling. Do not invent image paths, visual QA, strengths, risks, or recommended edits for images that were not generated.
+If image generation is unavailable or the generation call fails, return the composed prompt package and a blocked manifest using `generation_status: blocked`, then state that generation is blocked by image tooling availability or failure. Do not invent image paths, visual QA, strengths, risks, or recommended edits for images that were not generated.
 
-If using durable state, write `artifacts/assets/generations/GB-####.yaml` and update `artifacts/state.yaml` to `current_phase: qa` when candidates exist or `blocked` when generation is unavailable.
+If using durable state, write `artifacts/assets/generations/GB-####.yaml` and update `artifacts/state.yaml` to `current_phase: qa` when candidates exist or `blocked` when generation is unavailable or failed.
 
 ### 4. QA
 
@@ -136,7 +136,7 @@ State the desired state transition first, then style source, subject, generation
 Outcome: produce 4 asset candidates for the user's described object.
 Style source: approved Style Contract v3; treat it as read-only.
 Subject: use only the user's asset description.
-Image model: use GPT Image 2; if unavailable, return generation_status: blocked.
+Image generation: use the available Codex image-generation capability; record the tool and model only when reported; if unavailable or failed, return generation_status: blocked.
 QA: return candidate IDs, failure class if any, and whether to select, regenerate, edit, or return to curate.
 ```
 

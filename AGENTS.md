@@ -23,7 +23,7 @@ an approved Style Contract:
 
 ## Cyclic System
 
-This workflow is cyclic, not a one-way pipeline. `artifacts/state.yaml` is the current-state pointer.
+This workflow is cyclic, not a one-way pipeline. `artifacts/state.yaml` is the current-state pointer when durable state exists.
 
 ```text
 curate -> user selection -> style atoms -> Style Contract
@@ -48,9 +48,11 @@ parallel review, or delegated specialist work.
   skills.
 - Keep the user's wording for project, work, genre, and style. Do not invent
   names, genres, style labels, lore, output paths, or asset taxonomies.
-- Use GPT Image 2 as the default image-generation capability when a workflow
-  reaches an image-generation step. If GPT Image 2 is unavailable in the current
-  Codex environment, follow the blocked manifest behavior in the relevant skill.
+- Use the currently available Codex image-generation capability when a workflow
+  reaches an image-generation step. Record the generation tool and model when
+  the environment reports them; do not assert a specific model name when it is
+  not exposed. If image generation is unavailable or fails, follow the blocked
+  manifest behavior in the relevant skill.
 - `curate` must stop after the Reference Manifest and wait for user-selected
   candidate IDs.
 - `craft` must refuse to run unless the Style Contract is approved with

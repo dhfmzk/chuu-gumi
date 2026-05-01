@@ -11,11 +11,11 @@ Use `curate` to maintain the evolving style baseline. This is not a one-way pipe
 
 `curate` owns style decisions. `craft` may report evidence, but it must not rewrite the Style Contract.
 
-Use GPT Image 2 as the default image-generation capability for reference candidate generation. If GPT Image 2 is unavailable in the current Codex environment, return the blocked manifest described below instead of substituting another image model silently.
+Use the currently available Codex image-generation capability for reference candidate generation. Record the generation tool and model when the environment reports them. Do not assert a specific model name when it is not exposed. If image generation is unavailable or fails, return the blocked manifest described below instead of inventing image outputs.
 
 ## State Model
 
-When the repository is writable, store durable workflow state under `artifacts/` unless the user asks for an inline-only run. Read `artifacts/state.yaml` before changing state and update it after each state transition.
+When the repository is writable, store durable workflow state under `artifacts/` unless the user asks for an inline-only run. Read `artifacts/state.yaml` before changing state when it exists, and create or update it after each state transition.
 
 ```text
 artifacts/state.yaml
@@ -51,14 +51,14 @@ Set `pending_user_action` whenever the next step requires the user: `select_refe
 1. Restate the user's visual intent, constraints, and any provided references.
 2. Do not invent project names, genre labels, style names, output paths, or lore.
 3. Define 3-5 exploration axes from the user's words, such as color, shape language, rendering, composition, or detail density.
-4. Use GPT Image 2 through the available image-generation capability to create a broad reference batch.
+4. Use the available Codex image-generation capability to create a broad reference batch.
 5. Assign stable IDs like `R01`, `R02`, `R03`.
 6. Create a `reference_manifest` with file paths or attachment labels, short reads, strengths, risks, and recommended use.
 7. If using durable state, write `artifacts/style/references/RB-####.yaml` and update `artifacts/state.yaml` to `current_phase: selecting`.
 8. Return the manifest and ask the user to choose candidate IDs.
 9. Stop. Do not analyze deeply or write the Style Contract until the user selects references.
 
-If GPT Image 2 image generation is unavailable, produce the prompt matrix and a blocked manifest using `generation_status: blocked`, then tell the user that generation is blocked by missing GPT Image 2 access or image tooling. Do not invent image paths, visual reads, strengths, risks, or QA results for images that were not generated.
+If image generation is unavailable or the generation call fails, produce the prompt matrix and a blocked manifest using `generation_status: blocked`, then tell the user that generation is blocked by image tooling availability or failure. Do not invent image paths, visual reads, strengths, risks, or QA results for images that were not generated.
 
 ### 2. User Selection Gate
 
@@ -124,7 +124,7 @@ State the desired state transition first, then evidence, constraints, and checkp
 ```text
 Outcome: create a new reference batch and update style memory only after user selection.
 Evidence: use the user's visual intent and any provided references.
-Image model: use GPT Image 2; if unavailable, return generation_status: blocked.
+Image generation: use the available Codex image-generation capability; record the tool and model only when reported; if unavailable or failed, return generation_status: blocked.
 Constraints: use only the user's stated visual intent; do not invent a project, genre, or style name.
 Checkpoint: stop after the manifest and wait for selected candidate IDs.
 ```
