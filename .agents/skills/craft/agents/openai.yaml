@@ -1,0 +1,4 @@
+interface:
+  display_name: "Craft"
+  short_description: "Generate and QA contract-based assets"
+  default_prompt: "Use $craft with the approved Style Contract and asset request below. Generate candidates with GPT Image 2 or return a blocked manifest, QA them, and recommend select, regenerate, edit, or return to curate."
