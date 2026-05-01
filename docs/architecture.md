@@ -48,7 +48,7 @@ stateDiagram-v2
 | `style-reviewer` agent | optional independent review | silently fix artifacts without instruction |
 | `artifacts/state.yaml` | current phase and active pointers when durable state exists | replace artifact content |
 
-Image generation steps use the available Codex image-generation capability. The workflow records the generation tool and model when the environment reports them, and does not assert a specific model name when it is not exposed. If image generation is unavailable or fails, the workflow enters `blocked` and returns a blocked manifest rather than inventing image outputs.
+Image generation steps use the available Codex image-generation capability. The workflow records the generation tool and model when the environment reports them, and does not assert a specific model name when it is not exposed. Hand-authored SVG, vector, HTML/CSS, canvas, and other code-native placeholders are not valid generated candidates. If image generation is unavailable or fails, the workflow enters `blocked` and returns a blocked manifest rather than inventing image outputs.
 
 ## Evidence Flow
 

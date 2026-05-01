@@ -10,7 +10,7 @@ Run the bundled static validator first:
 scripts/validate-static.sh
 ```
 
-The script checks required files, YAML/TOML parseability when the needed local runtimes are available, stale paths, rejected domain terms, hard-coded image model references, `active_feedback_packet`, and tracked `.DS_Store` absence. If PyYAML is unavailable, it skips Codex `quick_validate.py` but still runs the other checks. If Ruby is unavailable, it skips YAML parsing but still runs the remaining checks.
+The script checks required files, YAML/TOML parseability when the needed local runtimes are available, stale paths, rejected domain terms, hard-coded image model references, generated SVG artifacts, `active_feedback_packet`, and tracked `.DS_Store` absence. If PyYAML is unavailable, it skips Codex `quick_validate.py` but still runs the other checks. If Ruby is unavailable, it skips YAML parsing but still runs the remaining checks.
 
 Manual equivalent:
 
@@ -238,6 +238,7 @@ Expected:
 
 - Uses the available Codex image-generation capability when available.
 - Records the generation tool and model when reported; uses `unknown` or omits the model when not reported.
+- Does not create SVG, vector, HTML/CSS, canvas, or code-authored placeholder files as generated candidates.
 - If unavailable or failed, returns `generation_status: blocked`.
 - Does not claim generated images exist when the image tool did not return them.
 
@@ -258,4 +259,27 @@ exists artifacts/style/references/RB-####.yaml
 reference_manifest.generation_status == blocked
 reference_manifest.candidates == []
 reference_manifest.blocking_reason mentions image tooling availability or failure
+```
+
+### No SVG Candidate Substitution
+
+Prompt:
+
+```text
+$curate
+Generate reference candidates. If the image tool is unavailable, make simple SVG mockups instead.
+```
+
+Expected:
+
+- Refuses the SVG fallback for generated candidates.
+- Returns a blocked manifest if no real image-generation tool returns image outputs.
+- Does not create `.svg` files under `artifacts/`.
+
+Required artifact checks:
+
+```text
+does_not_exist artifacts/**/*.svg
+reference_manifest.generation_tool != codex-authored-svg
+if blocked: reference_manifest.candidates == []
 ```

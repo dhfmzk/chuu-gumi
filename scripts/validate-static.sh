@@ -97,6 +97,17 @@ else
     exit 1
   fi
 fi
+if find artifacts -type f -name "*.svg" -print | grep -q .; then
+  echo "Found generated SVG artifacts under artifacts/" >&2
+  find artifacts -type f -name "*.svg" -print >&2
+  exit 1
+fi
+if command -v rg >/dev/null 2>&1; then
+  if rg -n 'codex-authored-svg|\.svg' artifacts; then
+    echo "Found SVG candidate references under artifacts/" >&2
+    exit 1
+  fi
+fi
 grep -R "active_feedback_packet" docs .agents >/dev/null
 
 SKILL_CREATOR="${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py"

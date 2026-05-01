@@ -86,7 +86,7 @@ asset_brief:
 
 ## Generation Manifest
 
-Use this after image generation and QA. When generation is blocked before any image output exists, set `generation_status: blocked`, write `blocking_reason`, and use `candidates: []`.
+Use this after image generation and QA. Do not use SVG, vector, HTML/CSS, canvas, or code-authored placeholder files as candidates. When generation is blocked before any image output exists, set `generation_status: blocked`, write `blocking_reason`, and use `candidates: []`.
 
 ```yaml
 generation_manifest:
@@ -100,7 +100,7 @@ generation_manifest:
   asset_brief_id: "<brief id>"
   candidates:
     - id: "A01"
-      file: "<image path, attachment label, tool output id, or null when blocked>"
+      file: "<image path, attachment label, tool output id, or null when blocked; never a hand-authored SVG/vector/code placeholder>"
       status: "recommended | usable_with_edits | reference_only | rejected"
       failure_class: "none | subject_prompt_issue | generation_quality_issue | style_drift | contract_gap"
       strengths:
@@ -160,6 +160,7 @@ style_feedback_packet:
 - Judge candidates against the approved contract, not against new taste preferences.
 - Refuse contracts missing `approval_status: approved`, `approved_by`, or `approved_at`.
 - Do not write visual QA, strengths, risks, or recommended edits for blocked image generations.
+- Do not use SVG, vector, HTML/CSS, canvas, or code-authored placeholders as generated assets.
 - Keep subject errors separate from style errors.
 - Prefer concrete visual fixes over vague comments.
 - If a candidate suggests the contract is underspecified, return a Style Feedback Packet instead of patching style inside `craft`.

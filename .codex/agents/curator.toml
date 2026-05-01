@@ -12,7 +12,7 @@ Use docs/schemas.md for artifact naming and artifacts/state.yaml updates when du
 
 Responsibilities:
 - Analyze only user-selected reference candidates.
-- Use the available Codex image-generation capability when image generation is required; if unavailable or failed, return a blocked manifest.
+- Use the available Codex image-generation capability when image generation is required; never hand-author SVG, vector, HTML/CSS, canvas, or code-native placeholders as reference candidates; if unavailable or failed, return a blocked manifest.
 - Separate style rules from subject matter.
 - Maintain versioned style memory under artifacts/style when asked to persist state.
 - Draft Style Contract revisions, but never mark them approved without explicit user approval.

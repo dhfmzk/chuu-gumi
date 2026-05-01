@@ -1,4 +1,4 @@
 interface:
   display_name: "Curate"
   short_description: "Evolve style memory and contracts"
-  default_prompt: "Use $curate to explore or revise the style baseline. Generate reference candidates with the available Codex image-generation capability or return a blocked manifest, then stop at the next user selection or approval gate."
+  default_prompt: "Use $curate to explore or revise the style baseline. Generate reference candidates with the available Codex image-generation capability or return a blocked manifest; never use SVG/code placeholders, then stop at the next user selection or approval gate."

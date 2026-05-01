@@ -11,7 +11,7 @@ Use `curate` to maintain the evolving style baseline. This is not a one-way pipe
 
 `curate` owns style decisions. `craft` may report evidence, but it must not rewrite the Style Contract.
 
-Use the currently available Codex image-generation capability for reference candidate generation. Record the generation tool and model when the environment reports them. Do not assert a specific model name when it is not exposed. If image generation is unavailable or fails, return the blocked manifest described below instead of inventing image outputs.
+Use the currently available Codex image-generation capability for reference candidate generation. Record the generation tool and model when the environment reports them. Do not assert a specific model name when it is not exposed. Do not hand-author SVG, vector, HTML/CSS, canvas, or other code-native placeholders as reference candidates. If image generation is unavailable or fails, return the blocked manifest described below instead of inventing image outputs.
 
 ## State Model
 
@@ -58,7 +58,7 @@ Set `pending_user_action` whenever the next step requires the user: `select_refe
 8. Return the manifest and ask the user to choose candidate IDs.
 9. Stop. Do not analyze deeply or write the Style Contract until the user selects references.
 
-If image generation is unavailable or the generation call fails, produce the prompt matrix and a blocked manifest using `generation_status: blocked`, then tell the user that generation is blocked by image tooling availability or failure. Do not invent image paths, visual reads, strengths, risks, or QA results for images that were not generated.
+If image generation is unavailable or the generation call fails, produce the prompt matrix and a blocked manifest using `generation_status: blocked`, then tell the user that generation is blocked by image tooling availability or failure. SVG, vector, HTML/CSS, canvas, or code-authored assets are not substitutes for generated reference candidates. Do not invent image paths, visual reads, strengths, risks, or QA results for images that were not generated.
 
 ### 2. User Selection Gate
 
@@ -113,6 +113,7 @@ Use this mode when `craft` returns `next_step_recommendation: return_to_curate`,
 - Use stable candidate IDs across all follow-up turns.
 - Preserve user language in summaries when practical.
 - Do not claim a generated image exists unless the image tool returned it.
+- Do not create SVG, vector, HTML/CSS, canvas, or code-native placeholder files as reference candidates.
 - Do not silently change the user's chosen references.
 - Do not treat generated asset QA as a style rule without user approval.
 - Keep a visible version trail for every approved Style Contract.
@@ -124,7 +125,7 @@ State the desired state transition first, then evidence, constraints, and checkp
 ```text
 Outcome: create a new reference batch and update style memory only after user selection.
 Evidence: use the user's visual intent and any provided references.
-Image generation: use the available Codex image-generation capability; record the tool and model only when reported; if unavailable or failed, return generation_status: blocked.
+Image generation: use the available Codex image-generation capability; record the tool and model only when reported; do not use SVG or code-authored substitutes; if unavailable or failed, return generation_status: blocked.
 Constraints: use only the user's stated visual intent; do not invent a project, genre, or style name.
 Checkpoint: stop after the manifest and wait for selected candidate IDs.
 ```

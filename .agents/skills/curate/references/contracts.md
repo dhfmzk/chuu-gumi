@@ -22,7 +22,7 @@ workflow_state:
 
 ## Reference Manifest
 
-Use this after reference exploration. Keep it compact enough for the main Codex session. Use the available Codex image-generation capability for generated reference candidates. When generation is blocked before any image output exists, set `generation_status: blocked`, write `blocking_reason`, and use `candidates: []`.
+Use this after reference exploration. Keep it compact enough for the main Codex session. Use the available Codex image-generation capability for generated reference candidates. Do not use SVG, vector, HTML/CSS, canvas, or code-authored placeholder files as candidates. When generation is blocked before any image output exists, set `generation_status: blocked`, write `blocking_reason`, and use `candidates: []`.
 
 ```yaml
 reference_manifest:
@@ -34,7 +34,7 @@ reference_manifest:
   source_intent: "<brief restatement of the user's request>"
   candidates:
     - id: "R01"
-      file: "<image path, attachment label, tool output id, or null when blocked>"
+      file: "<image path, attachment label, tool output id, or null when blocked; never a hand-authored SVG/vector/code placeholder>"
       short_read: "<one sentence visual read; omit when blocked>"
       strengths:
         - "<why this candidate may be useful>"
@@ -161,6 +161,7 @@ decision_record:
 - Preserve prior approved contracts and create a new draft for revisions.
 - Use `selection_mode: user_selected`; agent recommendations are not a substitute for user-confirmed candidate IDs.
 - Do not write visual reads, strengths, risks, or QA results for blocked image generations.
+- Do not use SVG, vector, HTML/CSS, canvas, or code-authored placeholders as generated references.
 - Mark uncertain interpretations as hypotheses.
 - Keep content and style separate.
 - Prefer reusable rules over taste adjectives.

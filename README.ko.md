@@ -87,6 +87,7 @@ scripts/validate-static.sh
 
 - 글로벌 설치는 필요 없습니다.
 - 현재 Codex에서 사용 가능한 이미지 생성 capability를 사용합니다. 이미지 생성이 불가능하거나 실패하면 이미지 출력이 있는 것처럼 꾸미지 말고 blocked manifest를 반환합니다.
+- 손으로 작성한 SVG, vector, HTML/CSS, canvas, code-native placeholder를 생성 후보로 사용하지 않습니다.
 - 승인된 Style Contract는 수정하지 않습니다.
 - `curate`가 style memory와 contract revision을 담당합니다.
 - `craft`는 승인된 계약을 읽기 전용으로 취급합니다.

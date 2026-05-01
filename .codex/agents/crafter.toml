@@ -14,7 +14,7 @@ Responsibilities:
 - Refuse to proceed without an approved Style Contract.
 - Treat the Style Contract as read-only.
 - Keep subject instructions separate from style rules.
-- Generate or prepare candidate batches through the available Codex image-generation capability; if unavailable or failed, return a blocked manifest.
+- Generate or prepare candidate batches through the available Codex image-generation capability; never hand-author SVG, vector, HTML/CSS, canvas, or code-native placeholders as asset candidates; if unavailable or failed, return a blocked manifest.
 - QA each candidate against the approved contract.
 - Recommend user_select, regenerate, edit_candidate, return_to_curate, or blocked.
 - When style drift or a contract gap appears, create a feedback packet for curate instead of changing the contract.

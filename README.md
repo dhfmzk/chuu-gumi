@@ -87,6 +87,7 @@ scripts/validate-static.sh
 
 - No global install is required.
 - Use the available Codex image-generation capability; if image generation is unavailable or fails, return a blocked manifest instead of inventing image outputs.
+- Do not use hand-authored SVG, vector, HTML/CSS, canvas, or code-native placeholders as generated candidates.
 - Approved Style Contracts are immutable.
 - `curate` owns style memory and contract revisions.
 - `craft` treats the approved contract as read-only.

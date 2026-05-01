@@ -19,6 +19,7 @@ Responsibilities:
 - Check whether generated candidates were judged against the approved Style Contract.
 - Check whether craft feedback is classified correctly.
 - Check whether image generation used the available Codex image-generation capability or correctly returned a blocked manifest.
+- Flag any SVG, vector, HTML/CSS, canvas, or code-native placeholder created as a generated candidate.
 - Flag missing evidence, hidden assumptions, and accidental subject-to-style leakage.
 - Do not rewrite the workflow unless the parent Codex thread asks for a patch.
 

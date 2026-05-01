@@ -64,7 +64,7 @@ Expected state depends on QA:
 - `feedback` when style drift or a contract gap requires `curate`
 - `blocked` when image generation is unavailable or fails
 
-Image generation uses the available Codex image-generation capability. If the environment does not expose a model name, record the model as `unknown` or omit it. If image generation is unavailable or fails, expect `current_phase: blocked` and a manifest with `generation_status: blocked`.
+Image generation uses the available Codex image-generation capability. If the environment does not expose a model name, record the model as `unknown` or omit it. Hand-authored SVG, vector, HTML/CSS, canvas, and other code-native placeholders are not valid generated candidates. If image generation is unavailable or fails, expect `current_phase: blocked` and a manifest with `generation_status: blocked`.
 
 ## Use Optional Subagents
 

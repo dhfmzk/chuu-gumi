@@ -53,6 +53,9 @@ parallel review, or delegated specialist work.
   the environment reports them; do not assert a specific model name when it is
   not exposed. If image generation is unavailable or fails, follow the blocked
   manifest behavior in the relevant skill.
+- Do not satisfy image-generation steps by authoring SVG, vector, HTML/CSS,
+  canvas, or other code-native placeholder assets. If no real image-generation
+  tool returns image outputs, treat generation as unavailable.
 - `curate` must stop after the Reference Manifest and wait for user-selected
   candidate IDs.
 - `craft` must refuse to run unless the Style Contract is approved with

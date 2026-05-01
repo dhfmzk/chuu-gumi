@@ -11,7 +11,7 @@ Use `craft` to produce and evaluate asset candidates from an approved Style Cont
 
 This is a loop, not a terminal production step. `craft` may discover that an asset prompt is weak, the generator drifted, or the Style Contract is underspecified. It reports those findings, but it does not revise the contract itself.
 
-Use the currently available Codex image-generation capability for asset candidate generation. Record the generation tool and model when the environment reports them. Do not assert a specific model name when it is not exposed. If image generation is unavailable or fails, return the blocked manifest described below instead of inventing image outputs.
+Use the currently available Codex image-generation capability for asset candidate generation. Record the generation tool and model when the environment reports them. Do not assert a specific model name when it is not exposed. Do not hand-author SVG, vector, HTML/CSS, canvas, or other code-native placeholders as asset candidates. If image generation is unavailable or fails, return the blocked manifest described below instead of inventing image outputs.
 
 ## Required Inputs
 
@@ -77,7 +77,7 @@ Keep style and subject separate. The subject description tells the image-generat
 
 Use the available Codex image-generation capability. Generate the requested number of candidates, or 3-6 candidates when the user did not specify a count.
 
-If image generation is unavailable or the generation call fails, return the composed prompt package and a blocked manifest using `generation_status: blocked`, then state that generation is blocked by image tooling availability or failure. Do not invent image paths, visual QA, strengths, risks, or recommended edits for images that were not generated.
+If image generation is unavailable or the generation call fails, return the composed prompt package and a blocked manifest using `generation_status: blocked`, then state that generation is blocked by image tooling availability or failure. SVG, vector, HTML/CSS, canvas, or code-authored assets are not substitutes for generated asset candidates. Do not invent image paths, visual QA, strengths, risks, or recommended edits for images that were not generated.
 
 If using durable state, write `artifacts/assets/generations/GB-####.yaml` and update `artifacts/state.yaml` to `current_phase: qa` when candidates exist or `blocked` when generation is unavailable or failed.
 
@@ -125,6 +125,7 @@ If the next step is `return_to_curate`, write `artifacts/assets/feedback/FB-####
 - Do not introduce new style names, genre names, project names, or asset taxonomies.
 - Do not use the asset subject as a reason to change style rules.
 - Do not convert QA findings into new style rules; package them for `curate`.
+- Do not create SVG, vector, HTML/CSS, canvas, or code-native placeholder files as asset candidates.
 - Do not claim final production readiness unless the user explicitly requested finalization and the output passed QA.
 - Do not modify project files, engine/editor settings, import settings, or runtime assets unless the user explicitly asks for that separate task.
 
@@ -136,7 +137,7 @@ State the desired state transition first, then style source, subject, generation
 Outcome: produce 4 asset candidates for the user's described object.
 Style source: approved Style Contract v3; treat it as read-only.
 Subject: use only the user's asset description.
-Image generation: use the available Codex image-generation capability; record the tool and model only when reported; if unavailable or failed, return generation_status: blocked.
+Image generation: use the available Codex image-generation capability; record the tool and model only when reported; do not use SVG or code-authored substitutes; if unavailable or failed, return generation_status: blocked.
 QA: return candidate IDs, failure class if any, and whether to select, regenerate, edit, or return to curate.
 ```
 
